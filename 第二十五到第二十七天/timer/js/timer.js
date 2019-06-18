@@ -1,0 +1,126 @@
+        window.onload = function() {
+            let year = document.querySelector('#year-select');
+            let month = document.querySelector('#month-select');
+            let day = document.querySelector('#day-select');
+            let hours = document.querySelector('#hour-select');
+            let minite = document.querySelector('#minite-select');
+            let second = document.querySelector('#second-select');
+
+            // 下来选项初始设置
+            function select(){
+                let now = new Date().getFullYear()
+                for(let i=(now-30);i<=(now+30);i++){
+                    year.options.add(new Option(i + '年',i))
+                }
+                for(let i=1;i<=12;i++){
+                    month.options.add(new Option(i + '月',i))
+                }
+                for(let i=1;i<=31;i++){
+                    day.options.add(new Option(i + '日',i))
+                }
+                for(let i=0;i<=59;i++){
+                    hours.options.add(new Option(i + '时',i))
+                }
+                for(let i=0;i<=59;i++){
+                    minite.options.add(new Option(i + '分',i))
+                }
+                for(let i=0;i<=59;i++){
+                    second.options.add(new Option(i + '秒',i))
+                }
+            }
+            select()
+            
+            // 判断是否闰年
+            function leapYear(year){
+                return (year % 100 !== 0 && year % 4 === 0) ||(year % 400 === 0)
+            }
+            
+            // 根据年月  天数联动变化
+            function changeDay(){
+
+                // 清除天数
+                function clear(){
+                    day.options.length = 0;
+                }
+                // 重新赋值天数
+                function addDay(n){
+                    for(let i=1;i<=n;i++){
+                        day.options.add(new Option(i + '日',i))
+                    }
+                }
+
+                let yearValue = parseInt(year.value)
+                let monthValue = parseInt(month.value)
+                if(monthValue === 2){
+                    if(leapYear(yearValue) === true){
+                        clear();
+                        addDay(29);
+                    }else{
+                        clear();
+                        addDay(28);
+                    }
+                }else if(monthValue === 4 || monthValue === 6 || monthValue === 9 || monthValue === 11){
+                    clear();
+                    addDay(30);
+                }else{
+                    clear();
+                    addDay(31);
+                }
+                console.log(monthValue)
+                console.log(month.value)
+            }
+            month.onchange = changeDay;
+            year.onchange = changeDay
+
+            
+            // 获取星期数
+            function weekDay(a){
+                let weekArr = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+                return weekArr[a]
+            }
+            // 获取预设时间
+            function setTime(){
+
+                // 月日时分秒十位补0
+                function fill(obj) {
+                    if(obj<10){
+                        obj = '0' + obj
+                    }
+                    return obj
+                }
+
+
+                let weekStr = year.value + '-' + month.value + '-' + day.value;
+                let week = new Date(weekStr);
+                return year.value + '年' + fill(month.value) + '月' + fill(day.value) + '日 ' + weekDay(week.getDay()) + ' ' + fill(hours.value) + ':' + fill(minite.value) + ':' + fill(second.value) 
+            }
+
+            // 获取时差
+            function jetLag() {
+                let now = new Date();
+                let selectStr = year.value + '/' + month.value + '/' + day.value + ' ' + hours.value + ':' + minite.value + ':' + second.value;
+                let selectTime = new Date(selectStr);
+                let distance = now.getTime() - selectTime.getTime();
+                let toggle;
+                if(distance>0){
+                    toggle = ' 已过去 '
+                }else{
+                    toggle = ' 还有 ';
+                    distance = -distance;
+                }
+                let d = distance / 86400000;
+                let h = distance % 86400000 / 3600000;
+                let m = distance % 86400000 % 3600000 / 60000;
+                let s = distance % 86400000 % 3600000 % 60000 / 1000;
+                return toggle + parseInt(d) + '天' + parseInt(h) + '小时' + parseInt(m) + '分钟' + parseInt(s) + '秒'    
+            }
+            
+            // P标签显示内容
+            function show() {
+                let p = document.querySelector('#result-wrapper');
+                p.innerHTML = '现在距离 ' + setTime() + jetLag()
+            }
+            show()
+            setInterval(show,1000)
+            
+        }
