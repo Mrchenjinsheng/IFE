@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            let now = new Date().getHours();
+            if(now > 0 && now <= 11){
+                document.write('早上好')
+            }else if(now > 11 && now <= 13){
+                document.write('中午好')
+            }else if(now >13 && now < 18){
+                document.write('下午好')
+            }else{
+                document.write('晚上好')
+            }
+        }
+    </script>
+</body>
+</html>

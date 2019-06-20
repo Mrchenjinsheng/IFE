@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="js/email.js"></script>
+    <title>Document</title>
+    <style>
+        .email-sug{
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+            width: 150px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 14px;
+        }
+        li:hover{
+            background-color: cyan; 
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+    </div>
+    <script>
+        window.onload = function() {
+            var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+            let input = document.querySelector('#email-input');
+            let ul = document.querySelector('#email-sug-wrapper');
+            // 获取用户输入
+            function getInput() {
+                let inputValue = input.value.trim();
+                return inputValue;
+            }
+            // 生成提示内容
+            function setPrompt() {
+                let input = getInput();
+                let inputA,inputB;
+                let index = 0;
+                if(input.indexOf('@') === -1){
+                    inputA = input
+                }else{
+                    inputA = input.slice(0,input.indexOf('@'));
+                    inputB = input.slice(input.indexOf('@') + 1)
+                }
+                let arr = [];
+                for(let i = 0; i < postfixList.length; i++){
+                    if(postfixList[i].indexOf(inputB) === 0){
+                        arr[i] = inputA + '@' + postfixList[i]
+                        index = 1
+                    }
+                }
+                if(index === 0){
+                    for(let i = 0;i < postfixList.length; i++){
+                        arr[i] = inputA + '@' +postfixList[i]
+                    }
+                }
+
+                for(let i = 0; i < arr.length; i++){
+                    if(typeof arr[i] == 'undefined' || arr[i] == ''){
+                        arr.splice(i,1);
+                        i--;
+                    }
+                }
+
+                return arr
+            }
+            
+            function addPrompt() {
+                let prompt = setPrompt();
+                let lenth = ul.childNodes.length;
+                for(let i = length - 1; i >= 0; i--){
+                    ul.removeChild(ul.childNodes[i])
+                }
+                for(let i = 0; i < prompt.length; i++){
+                    let li = document.createElement('li');
+                    li.innerHTML = prompt[i];
+                    ul.appendChild(li);
+                }
+            }
+
+            function toggle(){
+                let input = getInput();
+                if(input === ''){
+                    hide()
+                }else{
+                    show()
+                }
+            }
+
+            function hide(){
+                ul.style.display = 'none'
+            }
+            function show(){
+                ul.style.display = 'block'
+            }
+            ul.onclick = function(e){
+                let event = e || window.event;
+                let target = event.target || event.ercElement;
+                if(target.nodeName.toUpperCase() === 'LI'){
+                    input.value = target.innerText;
+                    hide()
+                }
+            }
+
+            input.oninput = function() {
+                getInput();
+                addPrompt();
+                // toggle();
+            }
+            
+            
+            
+        }
+    </script>
+</body>
+</html>

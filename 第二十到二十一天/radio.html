@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <label>
+        <input id="school" name="status" type="radio">
+        School
+    </label>
+    <label>
+        <input id="company" name="status" type="radio">
+        Company
+    </label>
+
+    <select id="school-select">
+        <option>北京邮电大学</option>
+        <option>黑龙江大学</option>
+        <option>华中科技大学</option>
+    </select>
+
+    <select id="company-select">
+        <option>百度</option>
+        <option>爱奇艺</option>
+    </select>
+    <script>
+        window.onload = function() {
+            let school = document.querySelector('#school-select');
+            let company = document.querySelector('#company-select');
+            let radio = document.getElementsByName('status');
+            radio[0].onclick = function() {
+                school.style.display = 'inline';
+                company.style.display = 'none';
+            }
+            radio[1].onclick = function() {
+                company.style.display = 'inline';
+                school.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
