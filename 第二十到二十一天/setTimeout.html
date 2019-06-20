@@ -13,13 +13,32 @@
         window.onload = function() {
             let div = document.querySelector('#fade-obj');
             let btn = document.querySelector('#fade-btn');
-            btn.onclick = function() {
-                let a= 1;
-                setInterval(function() {
-                    div.style.opacity = a - 0.1
-                },100)
+            let o = 1;
+            function fadeOut() {
+                div.style.opacity = o;
+                btn.disabled = true;
+                if(o > 0){
+                    o -= .1;
+                    setTimeout(fadeOut,100)
+                }else{
+                    btn.innerHTML = '淡入';
+                    btn.disabled = false;
+                    btn.onclick = fadeIn
+                }
             }
-            
+            function fadeIn() {
+                div.style.opacity = o;
+                btn.disabled = true;
+                if(o < 1){
+                    o += .1;
+                    setTimeout(fadeIn,100)
+                }else{
+                    btn.innerHTML = '淡出';
+                    btn.disabled = false;
+                    btn.onclick = fadeOut
+                }
+            }
+            btn.onclick = fadeOut
         }
     </script>
 </body>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 480px;
+            height: 480px;
+            overflow: hidden;
+        }
+        .img{
+            position: absolute;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="img" class="img" src="http://ife.baidu.com/2016/static/img/erik_ce204002.jpg" alt="">
+    </div>
+    <script>
+        window.onload = function() {
+            let img = document.querySelector('#img');
+            let i = 0;
+            function sprite() {
+                img.style.top = -480 * i + 'px';
+                i++
+                if(i >= 17){
+                    i = 0
+                }
+            }
+            setInterval(sprite,100)
+        }
+    </script>
+</body>
+</html>
