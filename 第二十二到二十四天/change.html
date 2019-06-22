@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            var scoreObject = {
+                "Tony": {
+                    "Math": 95,
+                    "English": 79,
+                    "Music": 68
+                }, 
+                "Simon": {
+                    "Math": 100,
+                    "English": 95,
+                    "Music": 98
+                }, 
+                "Annie": {
+                    "Math": 54,
+                    "English": 65,
+                    "Music": 88
+                }
+            }
+            function obj2arr() {
+                let arr = [];
+                let index = 0;
+                for(let name in scoreObject){
+                    arr.push([]);
+                    arr[index].push(name);
+                    arr[index].push(scoreObject[name].Math);
+                    arr[index].push(scoreObject[name].English);
+                    arr[index].push(scoreObject[name].Music);
+                    index++;
+                }
+                return arr
+            }
+            console.table(obj2arr())
+            var menuArr = [
+                [1, "Area1", -1],
+                [2, "Area2", -1],
+                [3, "Area1-1", 1],
+                [4, "Area1-2", 1],
+                [5, "Area2-1", 2],
+                [6, "Area2-2", 2],
+                [7, "Area1-2-3", 4],
+                [8, "Area2-2-1", 6],
+            ];
+            function arr2obj(){
+                
+            }
+            console.log(arr2obj())
+        }
+    </script>
+</body>
+</html>
