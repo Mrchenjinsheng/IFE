@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .email-sug{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        li:hover{
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+    </div>
+    <script>
+        window.onload = function() {
+            var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+            let ul = document.querySelector('#email-sug-wrapper');
+            let input = document.querySelector('#email-input');
+
+            // 焦点事件
+            function autoFocus() {
+                input.focus()
+            }
+            autoFocus();
+            
+            // 输入信息改变联动
+            input.oninput = function() {
+                getInput();
+                addPrompt();
+                toggle();
+            }
+            // 键盘事件选中索引
+            let index = 0;
+            // 键盘事件触发
+            input.onkeyup = key;
+            
+
+            // 获取输入值
+            function getInput() {
+                let inputValue = input.value;
+                return inputValue.trim()
+            }
+
+            // 设置提示信息
+            function setPrompt() {
+                let input = getInput();
+                let inputA,inputB;
+                let index = 0;
+                if(input.indexOf('@') === -1){
+                    inputA = input;
+                }else{
+                    inputA = input.slice(0,input.indexOf('@'));
+                    inputB = input.slice(input.indexOf('@') + 1);
+                }
+                let arr = [];
+                for(let i=0;i<postfixList.length;i++){
+                    if(postfixList[i].indexOf(inputB) === 0){
+                        arr[i] = inputA + '@' + postfixList[i];
+                        index = 1;
+                    }
+                }
+                if(index == 0){
+                    for(let i=0;i<postfixList.length;i++){
+                        arr[i] = inputA + '@' + postfixList[i];
+                    }
+                }
+                for(let i=0;i<arr.length;i++){
+                    if(typeof arr[i] === 'undefined' || arr[i] === ''){
+                        arr.splice(i,1);
+                        i--;
+                    }
+                }
+                return arr;
+            }
+
+            // 添加提示信息
+            function addPrompt() {
+                let prompt = setPrompt();
+                let length = ul.childNodes.length;
+                for(let i=length - 1;i>=0;i--){
+                    ul.removeChild(ul.childNodes[i])
+                }
+                for(let i=0;i<prompt.length;i++){
+                    let li = document.createElement('li');
+                    li.innerHTML = prompt[i];
+                    ul.appendChild(li)
+                }
+            }
+            // 显示隐藏转换
+            function toggle() {
+                let input = getInput()
+                if(input === ''){
+                    hide()
+                }else{
+                    show()
+                }
+            }
+
+            // 隐藏
+            function hide() {
+                ul.style.display = 'none'
+            }
+            // 显示
+            function show() {
+                ul.style.display = 'block'
+            }
+            
+            // 点击选项添加到输入框
+            ul.onclick = function(event) {
+                let e = event || window.event;
+                let target = e.target || e.srcElement;
+                if(target.nodeName === 'LI'){
+                    input.value = target.innerText;
+                    hide();
+                }
+            }
+            // 键盘事件
+            function key(event) {
+                let e = event || window.event;
+                if(e.keyCode === 38){
+                    index -=1;
+                }
+                if(e.keyCode === 40){
+                    index +=1;
+                }
+                if(e.keyCode === 108 || e.keyCode === 13){
+                    input.value = ul.childNodes[index].innerText;
+                    hide();
+                }
+                if(e.keyCode === 27){
+                    hide();
+                    input.blur();
+                }
+                if(index < 0){
+                    index = ul.childNodes.length - 1
+                }else if(index > ul.childNodes.length -1){
+                    index = 0;
+                }
+                liBGC();
+            }
+
+            // 键盘事件高亮
+            function liBGC() {
+                for(let i =0;i<ul.childNodes.length;i++){
+                    ul.childNodes[i].style.backgroundColor = '';
+                }
+                ul.childNodes[index].style.backgroundColor = '#3498db';
+                
+            }
+            
+        }
+    </script>
+</body>
+</html>
